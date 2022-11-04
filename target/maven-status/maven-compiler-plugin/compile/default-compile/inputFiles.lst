@@ -1,0 +1,7 @@
+/home/gerry/Documents/workspace-spring-tool-suite/BankingAppAPI/src/main/java/com/ognwan/model/CustomerProfile.java
+/home/gerry/Documents/workspace-spring-tool-suite/BankingAppAPI/src/main/java/com/ognwan/serviceImplementation/CustomerProfileService.java
+/home/gerry/Documents/workspace-spring-tool-suite/BankingAppAPI/src/main/java/com/ognwan/controller/CustomerProfileController.java
+/home/gerry/Documents/workspace-spring-tool-suite/BankingAppAPI/src/main/java/com/ognwan/service/ServiceInterface.java
+/home/gerry/Documents/workspace-spring-tool-suite/BankingAppAPI/src/main/java/com/ognwan/repository/CustomerProfileRepository.java
+/home/gerry/Documents/workspace-spring-tool-suite/BankingAppAPI/src/main/java/com/ognwan/exceptions/UserNotFoundException.java
+/home/gerry/Documents/workspace-spring-tool-suite/BankingAppAPI/src/main/java/com/ognwan/BankingAppApiApplication.java
