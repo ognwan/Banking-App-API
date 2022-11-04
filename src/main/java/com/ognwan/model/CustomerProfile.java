@@ -65,6 +65,8 @@ public class CustomerProfile {
 	@JsonIgnore
 	private String userName;
 	@JsonIgnore
+	@Size(min = 8)
+	@Pattern(regexp = "^(?=[a-zA-Z0-9!@#$%^&*_=+;:,.?]{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*_=+;:,.?]).*", message = "password not strong enough")
 	private String password;
 	@NotNull
 	@NotEmpty(message = "email field cannot be blank")
@@ -91,8 +93,7 @@ public class CustomerProfile {
 
 	public String generatePassword() {
 		char[] possibleCharacters = (new String(
-				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?"))
-				.toCharArray();
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_=+;:,.?")).toCharArray();
 		String password = RandomStringUtils.random(8, 0, possibleCharacters.length - 1, false, false,
 				possibleCharacters, new SecureRandom());
 		return password;
