@@ -75,6 +75,6 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 
 	public boolean validate(String email, String password) {
 		CustomerProfile returnedCustomer = customerProfileRepo.findByEmail(email);
-		return returnedCustomer != null && returnedCustomer.getPassword().equals(password)
+		return returnedCustomer != null && returnedCustomer.getPassword().equals(password);
 	}
 }
