@@ -5,6 +5,8 @@ package com.ognwan.serviceImplementation;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -76,5 +78,33 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 	public boolean validate(String email, String password) {
 		CustomerProfile returnedCustomer = customerProfileRepo.findByEmail(email);
 		return returnedCustomer != null && returnedCustomer.getPassword().equals(password);
+	}
+
+	public boolean changePassword(String email, String oldPassword, String newPassword, String confirmNewPassword)
+			throws Exception {
+
+		CustomerProfile returnedCustomer = customerProfileRepo.findByEmail(email);
+		if (!newPassword.equals(confirmNewPassword)) {
+			throw new Exception("passwords do not match");
+		}
+		if (!isPasswordValid(newPassword)) {
+			throw new Exception("password doesn't meet requirements");
+		}
+		if (newPassword.equals(oldPassword)) {
+			throw new Exception("new password cannot be the same as a previous password");
+		}
+		if (validate(email, oldPassword)) {
+			returnedCustomer.setPassword(newPassword);
+			customerProfileRepo.save(returnedCustomer);
+			return true;
+		}
+		throw new Exception("username or password incorrect");
+	}
+
+	public boolean isPasswordValid(String password) {
+		Pattern pattern = Pattern.compile(
+				"^(?=[a-zA-Z0-9!@#$%^&*_=+;:,.?]{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*_=+;:,.?]).*");
+		Matcher matcher = pattern.matcher(password);
+		return matcher.matches();
 	}
 }

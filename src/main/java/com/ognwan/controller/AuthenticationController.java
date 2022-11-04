@@ -50,7 +50,6 @@ public class AuthenticationController {
 			CustomerProfile newCustomerProfile = customerProfileService.create(customerProfile);
 			return ResponseEntity.created(null).body(newCustomerProfile);
 		} catch (Exception e) {
-			System.out.println(e.getClass());
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
@@ -61,5 +60,16 @@ public class AuthenticationController {
 			return ResponseEntity.ok().body("login Successful");
 		}
 		return ResponseEntity.badRequest().body("incorrect username or password, please try again");
+	}
+
+	@PostMapping("/change-password")
+	public ResponseEntity<?> login(@RequestParam String email, String oldPassword, String newPassword,
+			String confirmNewPassword) {
+		try {
+			customerProfileService.changePassword(email, oldPassword, newPassword, confirmNewPassword);
+			return ResponseEntity.ok().body("password changed successfully");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 }
