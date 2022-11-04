@@ -3,19 +3,12 @@
  */
 package com.ognwan.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,22 +47,4 @@ public class CustomerProfileController {
 		}
 	}
 
-	@PostMapping
-	public ResponseEntity<?> createProfile(@RequestBody @Validated CustomerProfile customerProfile,
-			BindingResult error) {
-		try {
-			if (error.hasErrors()) {
-				Map<String, Object> errors = new HashMap<>();
-				for (FieldError fieldError : error.getFieldErrors()) {
-					errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-				}
-				return ResponseEntity.badRequest().body(errors);
-			}
-			CustomerProfile newCustomerProfile = customerProfileService.create(customerProfile);
-			return ResponseEntity.created(null).body(newCustomerProfile);
-		} catch (Exception e) {
-			System.out.println(e.getClass());
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
 }

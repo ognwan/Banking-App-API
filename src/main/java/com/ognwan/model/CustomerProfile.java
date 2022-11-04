@@ -86,6 +86,8 @@ public class CustomerProfile {
 	private LocalDateTime created;
 	@JsonIgnore
 	private LocalDateTime lastUpdated;
+	@JsonIgnore
+	private boolean requiresPasswordChange;
 
 	public String generatePassword() {
 		char[] possibleCharacters = (new String(
@@ -96,4 +98,5 @@ public class CustomerProfile {
 		return password;
 
 	}
+
 }

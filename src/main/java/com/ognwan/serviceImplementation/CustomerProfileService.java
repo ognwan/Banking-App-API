@@ -32,7 +32,7 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 
 	@Override
 	public CustomerProfile create(CustomerProfile customerProfile) throws Exception {
-		if (customerProfileRepo.findByEmail(customerProfile.getEmail()).isEmpty()) {
+		if (customerProfileRepo.findByEmail(customerProfile.getEmail()) == null) {
 			customerProfile.setCreated(LocalDateTime.now());
 			customerProfile.setLastUpdated(LocalDateTime.now());
 			customerProfile.setPassword(customerProfile.generatePassword());
@@ -65,12 +65,19 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 		return customerProfileRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 	}
 
-	public List<CustomerProfile> getByUserName(String username) {
+	public CustomerProfile getByUserName(String username) {
 		return customerProfileRepo.findByUserName(username);
 	}
 
-	public List<CustomerProfile> getByEmail(String email) {
+	public CustomerProfile getByEmail(String email) {
 		return customerProfileRepo.findByEmail(email);
 	}
 
+	public boolean validate(String email, String password) {
+		CustomerProfile returnedCustomer = customerProfileRepo.findByEmail(email);
+		if (returnedCustomer != null && returnedCustomer.getPassword().equals(password)) {
+			return true;
+		}
+		return false;
+	}
 }
