@@ -62,7 +62,7 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 
 	@Override
 	public CustomerProfile getById(long id) throws UserNotFoundException {
-		return customerProfileRepo.findById(id).orElseThrow(() -> new UserNotFoundException("user not found"));
+		return customerProfileRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 	}
 
 	public List<CustomerProfile> getByUserName(String username) {

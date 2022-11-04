@@ -54,12 +54,6 @@ public class CustomerProfileController {
 		}
 	}
 
-	@GetMapping("/u/{userName}")
-	public ResponseEntity<List<CustomerProfile>> getCustomerByUserName(@PathVariable String userName) {
-		List<CustomerProfile> returnedCustomerProfile = customerProfileService.getByUserName(userName);
-		return ResponseEntity.ok(returnedCustomerProfile);
-	}
-
 	@PostMapping
 	public ResponseEntity<?> createProfile(@RequestBody @Validated CustomerProfile customerProfile,
 			BindingResult error) {
