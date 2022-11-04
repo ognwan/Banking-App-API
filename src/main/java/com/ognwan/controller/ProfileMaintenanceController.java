@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @RequestMapping("/customer")
-public class CustomerProfileController {
+public class ProfileMaintenanceController {
 	@Autowired
 	private CustomerProfileService customerProfileService;
 
