@@ -53,7 +53,7 @@ public class ProfileMaintenanceController {
 	@PostMapping("/update-profile")
 	public ResponseEntity<?> updateCustomerDetails(@RequestBody CustomerProfile customerProfile,
 			@RequestParam String email) {
-		CustomerProfile returnedCustomer = customerProfileService.getCustomerByEmail(email);
+		CustomerProfile returnedCustomer = customerProfileService.getByEmail(email);
 		returnedCustomer.setFirstName(customerProfile.getFirstName());
 		returnedCustomer.setMiddleName(customerProfile.getMiddleName());
 		returnedCustomer.setLastName(customerProfile.getLastName());
