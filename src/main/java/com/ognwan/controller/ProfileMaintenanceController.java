@@ -51,16 +51,22 @@ public class ProfileMaintenanceController {
 	}
 
 	@PostMapping("/update-profile")
-	public CustomerProfile updateCustomerDetails(@RequestBody CustomerProfile customerProfile,
+	public ResponseEntity<?> updateCustomerDetails(@RequestBody CustomerProfile customerProfile,
 			@RequestParam String email) {
 		CustomerProfile returnedCustomer = customerProfileService.getCustomerByEmail(email);
 		returnedCustomer.setFirstName(customerProfile.getFirstName());
 		returnedCustomer.setMiddleName(customerProfile.getMiddleName());
 		returnedCustomer.setLastName(customerProfile.getLastName());
 		returnedCustomer.setAddress(customerProfile.getAddress());
-		returnedCustomer.setEmail(customerProfile.getEmail());
+		try {
+			if (customerProfileService.isEmailUnique(customerProfile.getEmail())) {
+				returnedCustomer.setEmail(customerProfile.getEmail());
+			}
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 		returnedCustomer.setPhoneNumber(customerProfile.getPhoneNumber());
 		customerProfileService.update(returnedCustomer);
-		return returnedCustomer;
+		return ResponseEntity.ok().build();
 	}
 }
