@@ -101,6 +101,17 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 		throw new Exception("username or password incorrect");
 	}
 
+	public boolean isEmailUnique(String email) throws Exception {
+		if (customerProfileRepo.findByEmail(email) != null) {
+			throw new Exception("email already exists");
+		}
+		return true;
+	}
+
+	public CustomerProfile getCustomerByEmail(String email) {
+		return customerProfileRepo.findByEmail(email);
+	}
+
 	public boolean isPasswordValid(String password) {
 		Pattern pattern = Pattern.compile(
 				"^(?=[a-zA-Z0-9!@#$%^&*_=+;:,.?]{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*_=+;:,.?]).*");
