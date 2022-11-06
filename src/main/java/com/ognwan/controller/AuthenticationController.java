@@ -57,9 +57,9 @@ public class AuthenticationController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestParam String email, String password) {
 		if (customerProfileService.validate(email, password)) {
-			return ResponseEntity.ok().body("login Successful");
+			return ResponseEntity.ok().body("Login Successful");
 		}
-		return ResponseEntity.badRequest().body("incorrect username or password, please try again");
+		return ResponseEntity.badRequest().body("Incorrect username or password, please try again");
 	}
 
 	@PostMapping("/change-password")
@@ -67,7 +67,7 @@ public class AuthenticationController {
 			String confirmNewPassword) {
 		try {
 			customerProfileService.changePassword(email, oldPassword, newPassword, confirmNewPassword);
-			return ResponseEntity.ok().body("password changed successfully");
+			return ResponseEntity.ok().body("Password changed successfully");
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

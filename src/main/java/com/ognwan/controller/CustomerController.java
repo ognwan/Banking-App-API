@@ -53,7 +53,6 @@ public class CustomerController {
 	@PutMapping("/update-profile")
 	public ResponseEntity<?> updateCustomerDetails(@RequestBody CustomerProfile customerProfile,
 			@RequestParam String email) {
-
 		CustomerProfile returnedCustomer = customerProfileService.getByEmail(email);
 
 		try {

@@ -108,10 +108,6 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 		return true;
 	}
 
-	public CustomerProfile getCustomerByEmail(String email) {
-		return customerProfileRepo.findByEmail(email);
-	}
-
 	public boolean isPasswordValid(String password) {
 		Pattern pattern = Pattern.compile(
 				"^(?=[a-zA-Z0-9!@#$%^&*_=+;:,.?]{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*_=+;:,.?]).*");
