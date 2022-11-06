@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -84,6 +85,17 @@ public class CustomerController {
 
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@DeleteMapping
+	public ResponseEntity<?> delete(@RequestParam String email) throws Exception {
+		CustomerProfile returnedCustomer = customerProfileService.getByEmail(email);
+		if (returnedCustomer == null) {
+			return ResponseEntity.badRequest().body("User not found");
+		} else {
+			customerProfileService.delete(returnedCustomer.getId());
+			return ResponseEntity.ok().build();
 		}
 	}
 }

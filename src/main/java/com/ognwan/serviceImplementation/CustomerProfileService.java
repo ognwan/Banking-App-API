@@ -46,12 +46,6 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 	}
 
 	@Override
-	public ResponseEntity<CustomerProfile> deleteById(long id) {
-		customerProfileRepo.deleteById(id);
-		return ResponseEntity.ok().build();
-	}
-
-	@Override
 	public CustomerProfile update(CustomerProfile customerProfile) {
 		CustomerProfile returnedCustomerProfile = customerProfileRepo.save(customerProfile);
 		return returnedCustomerProfile;
@@ -113,5 +107,11 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 				"^(?=[a-zA-Z0-9!@#$%^&*_=+;:,.?]{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*_=+;:,.?]).*");
 		Matcher matcher = pattern.matcher(password);
 		return matcher.matches();
+	}
+
+	@Override
+	public ResponseEntity<CustomerProfile> delete(long id) {
+		customerProfileRepo.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 }

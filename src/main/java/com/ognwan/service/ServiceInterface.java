@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.ognwan.exceptions.UserNotFoundException;
+import com.ognwan.model.CustomerProfile;
 
 /**
  * @author gerry
@@ -17,12 +18,12 @@ import com.ognwan.exceptions.UserNotFoundException;
 public interface ServiceInterface<T> {
 	public T create(T t) throws Exception;
 
-	public ResponseEntity<T> deleteById(long id);
-
 	public T update(T t);
 
 	public List<T> listAll();
 
 	public T getById(long id) throws UserNotFoundException;
+
+	ResponseEntity<CustomerProfile> delete(long id);
 
 }
