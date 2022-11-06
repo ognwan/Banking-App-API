@@ -79,7 +79,7 @@ public class CustomerProfile {
 	@NotNull
 	@NotBlank(message = "phone number is required")
 	@NonNull
-	@Pattern(regexp = "^\\d{10}$", message = "phone number is invalid")
+	@Pattern(regexp = "^\\d{10,11}$", message = "phone number is invalid")
 	private String phoneNumber;
 	@NotNull(message = "Date of Birth field cannot be blank")
 	@NonNull

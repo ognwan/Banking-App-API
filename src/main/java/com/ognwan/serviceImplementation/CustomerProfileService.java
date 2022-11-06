@@ -53,6 +53,7 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 
 	@Override
 	public CustomerProfile update(CustomerProfile customerProfile) {
+		System.out.println(customerProfile);
 		CustomerProfile returnedCustomerProfile = customerProfileRepo.save(customerProfile);
 		return returnedCustomerProfile;
 	}
