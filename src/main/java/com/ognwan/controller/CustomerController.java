@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @RequestMapping("/customer")
-public class ProfileMaintenanceController {
+public class CustomerController {
 	@Autowired
 	private CustomerProfileService customerProfileService;
 
@@ -80,7 +80,6 @@ public class ProfileMaintenanceController {
 			if (customerProfile.getPhoneNumber() != null) {
 				returnedCustomer.setPhoneNumber(customerProfile.getPhoneNumber());
 			}
-			System.out.println(returnedCustomer);
 			customerProfileService.update(returnedCustomer);
 			return ResponseEntity.ok(returnedCustomer);
 
