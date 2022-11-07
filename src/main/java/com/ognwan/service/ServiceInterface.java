@@ -17,8 +17,6 @@ public interface ServiceInterface<T> {
 
 	public T update(T t);
 
-//	public List<T> listAll();
-
 	public T getById(long id) throws UserNotFoundException;
 
 	ResponseEntity<T> delete(long id);
