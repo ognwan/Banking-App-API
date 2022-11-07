@@ -3,6 +3,8 @@
  */
 package com.ognwan.service;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.http.ResponseEntity;
 
 import com.ognwan.exceptions.UserNotFoundException;
@@ -17,7 +19,7 @@ public interface ServiceInterface<T> {
 
 	public T update(T t);
 
-	public T getById(long id) throws UserNotFoundException;
+	public T getById(long id) throws UserNotFoundException, AccountNotFoundException;
 
 	ResponseEntity<T> delete(long id);
 

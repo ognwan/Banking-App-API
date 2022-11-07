@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * @author gerry
@@ -31,6 +33,7 @@ import lombok.NonNull;
 @Entity
 @Table(name = "ACCOUNTS")
 @Data
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {
@@ -42,11 +45,28 @@ public class Account {
 	@Enumerated(EnumType.STRING)
 	private AccountType accountType;
 	@JsonIgnore
-	private BigDecimal balance;
+	@NotNull
+	private BigDecimal balance = BigDecimal.ZERO;
 	@JsonIgnore
 	private LocalDateTime createdAt;
+	@JsonIgnore
+	private LocalDateTime lastUpdated;
 	@ManyToOne
 //	@JsonIgnore
 	@JoinColumn(name = "customerId", referencedColumnName = "customerId")
 	private Customer customer;
+
+	/**
+	 * 
+	 */
+	public BigDecimal withdraw(BigDecimal amount) {
+		balance = balance.subtract(amount);
+		return balance;
+	}
+
+	public BigDecimal deposit(BigDecimal amount) {
+		balance = balance.add(amount);
+		return balance;
+	}
+
 }
