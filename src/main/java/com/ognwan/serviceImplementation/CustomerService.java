@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ognwan.exceptions.UserNotFoundException;
-import com.ognwan.model.CustomerProfile;
-import com.ognwan.repository.CustomerProfileRepository;
+import com.ognwan.model.Customer;
+import com.ognwan.repository.CustomerRepository;
 import com.ognwan.service.ServiceInterface;
 
 import lombok.AllArgsConstructor;
@@ -28,17 +28,17 @@ import lombok.NoArgsConstructor;
 @Service
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerProfileService implements ServiceInterface<CustomerProfile> {
+public class CustomerService implements ServiceInterface<Customer> {
 	@Autowired
-	CustomerProfileRepository customerProfileRepo;
+	CustomerRepository customerRepo;
 
 	@Override
-	public CustomerProfile create(CustomerProfile customerProfile) throws Exception {
-		if (customerProfileRepo.findByEmail(customerProfile.getEmail()) == null) {
-			customerProfile.setCreated(LocalDateTime.now());
-			customerProfile.setLastUpdated(LocalDateTime.now());
-			customerProfile.setPassword(customerProfile.generatePassword());
-			return customerProfileRepo.save(customerProfile);
+	public Customer create(Customer customer) throws Exception {
+		if (customerRepo.findByEmail(customer.getEmail()) == null) {
+			customer.setCreated(LocalDateTime.now());
+			customer.setLastUpdated(LocalDateTime.now());
+			customer.setPassword(customer.generatePassword());
+			return customerRepo.save(customer);
 		} else {
 			throw new Exception("email already exists");
 		}
@@ -46,38 +46,38 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 	}
 
 	@Override
-	public CustomerProfile update(CustomerProfile customerProfile) {
-		CustomerProfile returnedCustomerProfile = customerProfileRepo.save(customerProfile);
-		return returnedCustomerProfile;
+	public Customer update(Customer customer) {
+		Customer returnedcustomer = customerRepo.save(customer);
+		return returnedcustomer;
 	}
 
 	@Override
-	public List<CustomerProfile> listAll() {
-		return customerProfileRepo.findAll();
+	public List<Customer> listAll() {
+		return customerRepo.findAll();
 	}
 
 	@Override
-	public CustomerProfile getById(long id) throws UserNotFoundException {
-		return customerProfileRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+	public Customer getById(long id) throws UserNotFoundException {
+		return customerRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 	}
 
-	public CustomerProfile getByUserName(String username) {
-		return customerProfileRepo.findByUserName(username);
+	public Customer getByUserName(String username) {
+		return customerRepo.findByUserName(username);
 	}
 
-	public CustomerProfile getByEmail(String email) {
-		return customerProfileRepo.findByEmail(email);
+	public Customer getByEmail(String email) {
+		return customerRepo.findByEmail(email);
 	}
 
 	public boolean validate(String email, String password) {
-		CustomerProfile returnedCustomer = customerProfileRepo.findByEmail(email);
+		Customer returnedCustomer = customerRepo.findByEmail(email);
 		return returnedCustomer != null && returnedCustomer.getPassword().equals(password);
 	}
 
 	public boolean changePassword(String email, String oldPassword, String newPassword, String confirmNewPassword)
 			throws Exception {
 
-		CustomerProfile returnedCustomer = customerProfileRepo.findByEmail(email);
+		Customer returnedCustomer = customerRepo.findByEmail(email);
 		if (!newPassword.equals(confirmNewPassword)) {
 			throw new Exception("passwords do not match");
 		}
@@ -89,14 +89,14 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 		}
 		if (validate(email, oldPassword)) {
 			returnedCustomer.setPassword(newPassword);
-			customerProfileRepo.save(returnedCustomer);
+			customerRepo.save(returnedCustomer);
 			return true;
 		}
 		throw new Exception("username or password incorrect");
 	}
 
 	public boolean isEmailUnique(String email) throws Exception {
-		if (customerProfileRepo.findByEmail(email) != null) {
+		if (customerRepo.findByEmail(email) != null) {
 			throw new Exception("email already exists");
 		}
 		return true;
@@ -110,8 +110,8 @@ public class CustomerProfileService implements ServiceInterface<CustomerProfile>
 	}
 
 	@Override
-	public ResponseEntity<CustomerProfile> delete(long id) {
-		customerProfileRepo.deleteById(id);
+	public ResponseEntity<Customer> delete(long id) {
+		customerRepo.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
 }

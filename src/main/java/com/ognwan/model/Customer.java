@@ -6,11 +6,13 @@ package com.ognwan.model;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,12 +26,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @author gerry
@@ -40,15 +40,14 @@ import lombok.ToString;
 @Table(name = "Customers")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+
 @RequiredArgsConstructor
-public class CustomerProfile {
+@Data
+public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonIgnore
-	private long id;
+	private long customerId;
 	@NotNull
 	@NonNull
 	@NotBlank
@@ -90,6 +89,9 @@ public class CustomerProfile {
 	private LocalDateTime lastUpdated;
 	@JsonIgnore
 	private boolean requiresPasswordChange;
+	@OneToMany(mappedBy = "customer")
+	@JsonIgnore
+	private List<Account> accounts;
 
 	public String generatePassword() {
 		char[] possibleCharacters = (new String(

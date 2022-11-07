@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ognwan.exceptions.UserNotFoundException;
-import com.ognwan.model.CustomerProfile;
-import com.ognwan.serviceImplementation.CustomerProfileService;
+import com.ognwan.model.Customer;
+import com.ognwan.serviceImplementation.CustomerService;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,17 +34,17 @@ import lombok.NoArgsConstructor;
 @RequestMapping("/customer")
 public class CustomerController {
 	@Autowired
-	private CustomerProfileService customerProfileService;
+	private CustomerService customerProfileService;
 
 	@GetMapping
-	public List<CustomerProfile> getAllCustomers() {
+	public List<Customer> getAllCustomers() {
 		return customerProfileService.listAll();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CustomerProfile> getCustomerById(@PathVariable Long id) {
+	public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
 		try {
-			CustomerProfile returnedCustomerProfile = customerProfileService.getById(id);
+			Customer returnedCustomerProfile = customerProfileService.getById(id);
 			return ResponseEntity.ok(returnedCustomerProfile);
 		} catch (UserNotFoundException e) {
 			return ResponseEntity.notFound().build();
@@ -52,9 +52,8 @@ public class CustomerController {
 	}
 
 	@PutMapping("/update-profile")
-	public ResponseEntity<?> updateCustomerDetails(@RequestBody CustomerProfile customerProfile,
-			@RequestParam String email) {
-		CustomerProfile returnedCustomer = customerProfileService.getByEmail(email);
+	public ResponseEntity<?> updateCustomerDetails(@RequestBody Customer customerProfile, @RequestParam String email) {
+		Customer returnedCustomer = customerProfileService.getByEmail(email);
 
 		try {
 			if (returnedCustomer == null) {
@@ -90,11 +89,11 @@ public class CustomerController {
 
 	@DeleteMapping
 	public ResponseEntity<?> delete(@RequestParam String email) throws Exception {
-		CustomerProfile returnedCustomer = customerProfileService.getByEmail(email);
+		Customer returnedCustomer = customerProfileService.getByEmail(email);
 		if (returnedCustomer == null) {
 			return ResponseEntity.badRequest().body("User not found");
 		} else {
-			customerProfileService.delete(returnedCustomer.getId());
+			customerProfileService.delete(returnedCustomer.getCustomerId());
 			return ResponseEntity.ok().build();
 		}
 	}
