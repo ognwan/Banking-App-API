@@ -3,8 +3,6 @@
  */
 package com.ognwan.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,52 +32,46 @@ import lombok.NoArgsConstructor;
 @RequestMapping("/customer")
 public class CustomerController {
 	@Autowired
-	private CustomerService customerProfileService;
-
-	@GetMapping
-	public List<Customer> getAllCustomers() {
-		return customerProfileService.listAll();
-	}
+	private CustomerService customerService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
 		try {
-			Customer returnedCustomerProfile = customerProfileService.getById(id);
-			return ResponseEntity.ok(returnedCustomerProfile);
+			Customer returnedcustomer = customerService.getById(id);
+			return ResponseEntity.ok(returnedcustomer);
 		} catch (UserNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}
 	}
 
 	@PutMapping("/update-profile")
-	public ResponseEntity<?> updateCustomerDetails(@RequestBody Customer customerProfile, @RequestParam String email) {
-		Customer returnedCustomer = customerProfileService.getByEmail(email);
+	public ResponseEntity<?> updateCustomerDetails(@RequestBody Customer customer, @RequestParam String email) {
+		Customer returnedCustomer = customerService.getByEmail(email);
 
 		try {
 			if (returnedCustomer == null) {
 				throw new Exception("User does not exist");
 			}
 
-			if (customerProfile.getEmail() != null
-					&& customerProfileService.isEmailUnique(customerProfile.getEmail())) {
-				returnedCustomer.setEmail(customerProfile.getEmail());
+			if (customer.getEmail() != null && customerService.isEmailUnique(customer.getEmail())) {
+				returnedCustomer.setEmail(customer.getEmail());
 			}
-			if (customerProfile.getFirstName() != null) {
-				returnedCustomer.setFirstName(customerProfile.getFirstName());
+			if (customer.getFirstName() != null) {
+				returnedCustomer.setFirstName(customer.getFirstName());
 			}
-			if (customerProfile.getMiddleName() != null) {
-				returnedCustomer.setMiddleName(customerProfile.getMiddleName());
+			if (customer.getMiddleName() != null) {
+				returnedCustomer.setMiddleName(customer.getMiddleName());
 			}
-			if (customerProfile.getLastName() != null) {
-				returnedCustomer.setLastName(customerProfile.getLastName());
+			if (customer.getLastName() != null) {
+				returnedCustomer.setLastName(customer.getLastName());
 			}
-			if (customerProfile.getAddress() != null) {
-				returnedCustomer.setAddress(customerProfile.getAddress());
+			if (customer.getAddress() != null) {
+				returnedCustomer.setAddress(customer.getAddress());
 			}
-			if (customerProfile.getPhoneNumber() != null) {
-				returnedCustomer.setPhoneNumber(customerProfile.getPhoneNumber());
+			if (customer.getPhoneNumber() != null) {
+				returnedCustomer.setPhoneNumber(customer.getPhoneNumber());
 			}
-			customerProfileService.update(returnedCustomer);
+			customerService.update(returnedCustomer);
 			return ResponseEntity.ok(returnedCustomer);
 
 		} catch (Exception e) {
@@ -89,11 +81,11 @@ public class CustomerController {
 
 	@DeleteMapping
 	public ResponseEntity<?> delete(@RequestParam String email) throws Exception {
-		Customer returnedCustomer = customerProfileService.getByEmail(email);
+		Customer returnedCustomer = customerService.getByEmail(email);
 		if (returnedCustomer == null) {
 			return ResponseEntity.badRequest().body("User not found");
 		} else {
-			customerProfileService.delete(returnedCustomer.getCustomerId());
+			customerService.delete(returnedCustomer.getCustomerId());
 			return ResponseEntity.ok().build();
 		}
 	}

@@ -4,7 +4,6 @@
 package com.ognwan.serviceImplementation;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,11 +48,6 @@ public class CustomerService implements ServiceInterface<Customer> {
 	public Customer update(Customer customer) {
 		Customer returnedcustomer = customerRepo.save(customer);
 		return returnedcustomer;
-	}
-
-	@Override
-	public List<Customer> listAll() {
-		return customerRepo.findAll();
 	}
 
 	@Override

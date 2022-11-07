@@ -42,10 +42,9 @@ public class AccountService implements ServiceInterface<Account> {
 		return null;
 	}
 
-	@Override
-	public List<Account> listAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Account> listById(long customerId) {
+		accountRepo.findByCustomerCustomerId(customerId);
+		return accountRepo.findAll();
 	}
 
 	@Override
