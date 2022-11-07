@@ -3,8 +3,6 @@
  */
 package com.ognwan.service;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
 import com.ognwan.exceptions.UserNotFoundException;
@@ -19,7 +17,7 @@ public interface ServiceInterface<T> {
 
 	public T update(T t);
 
-	public List<T> listAll();
+//	public List<T> listAll();
 
 	public T getById(long id) throws UserNotFoundException;
 
