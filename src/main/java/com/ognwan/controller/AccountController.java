@@ -53,7 +53,7 @@ public class AccountController {
 		return accountService.listAccountsByCustomerId(customerId);
 	}
 
-	@PostMapping("{accountNumber}/withdraw")
+	@PostMapping("/withdraw")
 	public ResponseEntity<?> withdraw(@PathVariable long accountNumber, @RequestParam BigDecimal amount) {
 		try {
 			Account returnedAccount = accountService.getById(accountNumber);
@@ -71,7 +71,7 @@ public class AccountController {
 	}
 
 	@PostMapping("/deposit")
-	public ResponseEntity<?> deposit(@RequestBody long accountNumber, BigDecimal amount)
+	public ResponseEntity<?> deposit(@PathVariable long accountNumber, BigDecimal amount)
 			throws AccountNotFoundException {
 		Account returnedAccount = accountService.getById(accountNumber);
 		try {
