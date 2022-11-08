@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.security.auth.login.AccountNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 /**
+ * .
+ * 
  * @author gerry
  * @version 1.0
  * 
@@ -28,14 +31,19 @@ import lombok.NoArgsConstructor;
 @Service
 @NoArgsConstructor
 @AllArgsConstructor
+@Transactional
 public class AccountService implements ServiceInterface<Account> {
 	@Autowired
-	AccountRepository accountRepo;
+	private AccountRepository accountRepo;
+	@Autowired
+	TransactionService transactionService;
 
 	@Override
 	public Account create(Account account) throws Exception {
 		account.setCreatedAt(LocalDateTime.now());
-		return accountRepo.save(account);
+		accountRepo.save(account);
+		transactionService.createTransaction(account, "Account opened", BigDecimal.ZERO);
+		return account;
 	}
 
 	@Override
@@ -64,12 +72,14 @@ public class AccountService implements ServiceInterface<Account> {
 		}
 		account.withdraw(amount);
 		Account updatedAccount = accountRepo.save(account);
+		transactionService.createTransaction(updatedAccount, "withdrawal", amount);
 		return updatedAccount.getBalance();
 	}
 
 	public BigDecimal deposit(Account account, BigDecimal amount) {
 		account.deposit(amount);
 		Account updatedAccount = accountRepo.save(account);
+		transactionService.createTransaction(updatedAccount, "deposit", amount);
 		return updatedAccount.getBalance();
 	}
 }

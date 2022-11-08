@@ -5,8 +5,6 @@ package com.ognwan.service;
 
 import javax.security.auth.login.AccountNotFoundException;
 
-import org.springframework.http.ResponseEntity;
-
 import com.ognwan.exceptions.UserNotFoundException;
 
 /**
