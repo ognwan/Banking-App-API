@@ -84,11 +84,11 @@ public class Customer {
 	@NotNull(message = "Date of Birth field cannot be blank")
 	@NonNull
 	private LocalDate DoB;
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime created = LocalDateTime.now();
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime lastUpdated;
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private boolean requiresPasswordChange;
 	@JsonIgnore
 	private boolean isDeleted = false;

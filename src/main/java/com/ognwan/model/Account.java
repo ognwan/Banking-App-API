@@ -47,12 +47,12 @@ public class Account {
 	@NonNull
 	@Enumerated(EnumType.STRING)
 	private AccountType accountType;
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@NotNull
 	private BigDecimal balance = BigDecimal.ZERO;
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime createdAt = LocalDateTime.now();
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime lastUpdated;
 	@JsonIgnore
 	private boolean isDeleted = false;
