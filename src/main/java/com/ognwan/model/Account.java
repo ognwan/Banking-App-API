@@ -5,6 +5,7 @@ package com.ognwan.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -51,21 +53,24 @@ public class Account {
 	private LocalDateTime createdAt;
 	@JsonIgnore
 	private LocalDateTime lastUpdated;
+	@JsonIgnore
+	private boolean isDeleted = false;
 	@ManyToOne
-//	@JsonIgnore
 	@JoinColumn(name = "customerId", referencedColumnName = "customerId")
 	private Customer customer;
+	@OneToMany(mappedBy = "account")
+	@JsonIgnore
+	private List<Transaction> transactions;
 
-	/**
-	 * 
-	 */
 	public BigDecimal withdraw(BigDecimal amount) {
 		balance = balance.subtract(amount);
+		setLastUpdated(LocalDateTime.now());
 		return balance;
 	}
 
 	public BigDecimal deposit(BigDecimal amount) {
 		balance = balance.add(amount);
+		setLastUpdated(LocalDateTime.now());
 		return balance;
 	}
 

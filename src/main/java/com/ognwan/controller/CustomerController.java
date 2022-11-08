@@ -79,13 +79,13 @@ public class CustomerController {
 		}
 	}
 
-	@DeleteMapping
-	public ResponseEntity<?> delete(@RequestParam String email) throws Exception {
-		Customer returnedCustomer = customerService.getByEmail(email);
+	@DeleteMapping("/delete/{customerId}")
+	public ResponseEntity<?> delete(@PathVariable long customerId) throws Exception {
+		Customer returnedCustomer = customerService.getById(customerId);
 		if (returnedCustomer == null) {
 			return ResponseEntity.badRequest().body("User not found");
 		} else {
-			customerService.delete(returnedCustomer.getCustomerId());
+			customerService.delete(customerId);
 			return ResponseEntity.ok().build();
 		}
 	}

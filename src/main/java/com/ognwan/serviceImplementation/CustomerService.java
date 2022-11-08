@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ognwan.exceptions.UserNotFoundException;
@@ -104,8 +103,7 @@ public class CustomerService implements ServiceInterface<Customer> {
 	}
 
 	@Override
-	public ResponseEntity<Customer> delete(long id) {
+	public void delete(long id) {
 		customerRepo.deleteById(id);
-		return ResponseEntity.ok().build();
 	}
 }

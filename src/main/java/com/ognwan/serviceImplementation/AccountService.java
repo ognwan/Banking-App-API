@@ -10,7 +10,6 @@ import java.util.List;
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ognwan.model.Account;
@@ -55,22 +54,20 @@ public class AccountService implements ServiceInterface<Account> {
 	}
 
 	@Override
-	public ResponseEntity<Account> delete(long id) {
-		return null;
+	public void delete(long id) {
+		accountRepo.deleteById(id);
 	}
 
 	public BigDecimal withdraw(Account account, BigDecimal amount) throws Exception {
 		if (account.getAccountType().equals(AccountType.savings) && amount.compareTo(account.getBalance()) == 1) {
 			throw new Exception("no overdraft available");
 		}
-		account.setLastUpdated(LocalDateTime.now());
 		account.withdraw(amount);
 		Account updatedAccount = accountRepo.save(account);
 		return updatedAccount.getBalance();
 	}
 
 	public BigDecimal deposit(Account account, BigDecimal amount) {
-		account.setLastUpdated(LocalDateTime.now());
 		account.deposit(amount);
 		Account updatedAccount = accountRepo.save(account);
 		return updatedAccount.getBalance();

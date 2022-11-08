@@ -89,6 +89,8 @@ public class Customer {
 	private LocalDateTime lastUpdated;
 	@JsonIgnore
 	private boolean requiresPasswordChange;
+	@JsonIgnore
+	private boolean isDeleted = false;
 	@OneToMany(mappedBy = "customer")
 	@JsonIgnore
 	private List<Account> accounts;

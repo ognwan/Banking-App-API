@@ -21,6 +21,6 @@ public interface ServiceInterface<T> {
 
 	public T getById(long id) throws UserNotFoundException, AccountNotFoundException;
 
-	ResponseEntity<T> delete(long id);
+	void delete(long id);
 
 }
