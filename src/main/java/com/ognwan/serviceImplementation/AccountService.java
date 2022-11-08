@@ -3,15 +3,18 @@
  */
 package com.ognwan.serviceImplementation;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.ognwan.exceptions.UserNotFoundException;
 import com.ognwan.model.Account;
+import com.ognwan.model.AccountType;
 import com.ognwan.repository.AccountRepository;
 import com.ognwan.service.ServiceInterface;
 
@@ -38,25 +41,38 @@ public class AccountService implements ServiceInterface<Account> {
 
 	@Override
 	public Account update(Account account) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Account> listById(long customerId) {
-		accountRepo.findByCustomerCustomerId(customerId);
-		return accountRepo.findAll();
+	public List<Account> listAccountsByCustomerId(long customerId) {
+		return accountRepo.findByCustomerCustomerId(customerId);
 	}
 
 	@Override
-	public Account getById(long id) throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+	public Account getById(long id) throws AccountNotFoundException {
+		return accountRepo.findById(id)
+				.orElseThrow(() -> new AccountNotFoundException("account number " + id + " not found"));
 	}
 
 	@Override
 	public ResponseEntity<Account> delete(long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	public BigDecimal withdraw(Account account, BigDecimal amount) throws Exception {
+		if (account.getAccountType().equals(AccountType.savings) && amount.compareTo(account.getBalance()) == 1) {
+			throw new Exception("no overdraft available");
+		}
+		account.setLastUpdated(LocalDateTime.now());
+		account.withdraw(amount);
+		Account updatedAccount = accountRepo.save(account);
+		return updatedAccount.getBalance();
+	}
+
+	public BigDecimal deposit(Account account, BigDecimal amount) {
+		account.setLastUpdated(LocalDateTime.now());
+		account.deposit(amount);
+		Account updatedAccount = accountRepo.save(account);
+		return updatedAccount.getBalance();
+	}
 }
