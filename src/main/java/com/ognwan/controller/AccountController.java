@@ -100,7 +100,7 @@ public class AccountController {
 		}
 	}
 
-	@DeleteMapping("/delete/account/{accountNumber}")
+	@DeleteMapping("/delete/{accountNumber}")
 	public ResponseEntity<?> delete(@PathVariable long accountNumber) {
 		try {
 			if (accountService.getById(accountNumber) == null) {
