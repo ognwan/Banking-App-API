@@ -10,7 +10,6 @@ import java.util.List;
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ognwan.model.Account;
@@ -55,9 +54,8 @@ public class AccountService implements ServiceInterface<Account> {
 	}
 
 	@Override
-	public ResponseEntity<Account> delete(long id) {
+	public void delete(long id) {
 		accountRepo.deleteById(id);
-		return ResponseEntity.ok().build();
 	}
 
 	public BigDecimal withdraw(Account account, BigDecimal amount) throws Exception {
