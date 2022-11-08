@@ -37,15 +37,64 @@ public class AccountController {
 	@Autowired
 	private CustomerService customerService;
 
-	@PostMapping("/openNewAccount")
+	@PostMapping("/open-new-account")
 	public Account openAccount(@RequestParam long id, @RequestBody Account account) throws Exception {
 		Customer returnedCustomer = customerService.getById(id);
 		account.setCustomer(returnedCustomer);
 		return accountService.create(account);
 	}
 
-	@GetMapping("/{customerId}")
+	@GetMapping("/account/{accountNumber}")
+	public ResponseEntity<?> getAccountByAccountNumber(@PathVariable long accountNumber) {
+		try {
+			Account returnedAccount = accountService.getById(accountNumber);
+			return ResponseEntity.ok(returnedAccount);
+		} catch (AccountNotFoundException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@GetMapping("/customer/{customerId}")
 	public List<Account> getAllAccountsByCustomerId(@PathVariable long customerId) {
+<<<<<<< Updated upstream
 		return accountService.listById(customerId);
+=======
+		return accountService.listAccountsByCustomerId(customerId);
+	}
+
+	@PostMapping("/withdraw")
+	public ResponseEntity<?> withdraw(@RequestParam long accountNumber, BigDecimal amount) {
+		try {
+			Account returnedAccount = accountService.getById(accountNumber);
+			if (returnedAccount == null || amount.equals(BigDecimal.ZERO)) {
+				throw new Exception("Account not found");
+			} else {
+				accountService.withdraw(returnedAccount, amount);
+				return ResponseEntity.ok()
+						.body("$" + amount + " withdrawn successfully. Balance = " + returnedAccount.getBalance());
+
+			}
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+
+	}
+
+	@PostMapping("/deposit")
+	public ResponseEntity<?> deposit(@RequestParam long accountNumber, BigDecimal amount)
+			throws AccountNotFoundException {
+		Account returnedAccount = accountService.getById(accountNumber);
+		try {
+			if (returnedAccount == null || amount.equals(BigDecimal.ZERO)) {
+				throw new Exception("Invalid entry");
+			} else {
+				accountService.deposit(returnedAccount, amount);
+				return ResponseEntity.ok()
+						.body("$" + amount + " deposited successfully. Balance = " + returnedAccount.getBalance());
+			}
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+>>>>>>> Stashed changes
 	}
 }
