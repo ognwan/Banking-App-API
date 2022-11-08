@@ -56,21 +56,20 @@ public class AccountService implements ServiceInterface<Account> {
 
 	@Override
 	public ResponseEntity<Account> delete(long id) {
-		return null;
+		accountRepo.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 
 	public BigDecimal withdraw(Account account, BigDecimal amount) throws Exception {
 		if (account.getAccountType().equals(AccountType.savings) && amount.compareTo(account.getBalance()) == 1) {
 			throw new Exception("no overdraft available");
 		}
-		account.setLastUpdated(LocalDateTime.now());
 		account.withdraw(amount);
 		Account updatedAccount = accountRepo.save(account);
 		return updatedAccount.getBalance();
 	}
 
 	public BigDecimal deposit(Account account, BigDecimal amount) {
-		account.setLastUpdated(LocalDateTime.now());
 		account.deposit(amount);
 		Account updatedAccount = accountRepo.save(account);
 		return updatedAccount.getBalance();

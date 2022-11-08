@@ -10,6 +10,7 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ognwan.exceptions.UserNotFoundException;
 import com.ognwan.model.Account;
 import com.ognwan.model.Customer;
 import com.ognwan.serviceImplementation.AccountService;
@@ -48,20 +50,31 @@ public class AccountController {
 		return accountService.create(account);
 	}
 
-	@GetMapping("/{customerId}")
+	@GetMapping("/customer/{customerId}")
 	public List<Account> getAllAccountsByCustomerId(@PathVariable long customerId) {
 		return accountService.listAccountsByCustomerId(customerId);
 	}
 
+	@GetMapping("/{accountNumber}")
+	public ResponseEntity<?> getAccountByAccountNumber(@PathVariable long accountNumber) {
+		try {
+			Account returnedAccount = accountService.getById(accountNumber);
+			return ResponseEntity.ok(returnedAccount);
+		} catch (AccountNotFoundException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 	@PostMapping("/withdraw")
-	public ResponseEntity<?> withdraw(@PathVariable long accountNumber, @RequestParam BigDecimal amount) {
+	public ResponseEntity<?> withdraw(@RequestParam long accountNumber, @RequestParam BigDecimal amount) {
 		try {
 			Account returnedAccount = accountService.getById(accountNumber);
 			if (returnedAccount == null) {
 				throw new Exception("Account not found");
 			} else {
 				accountService.withdraw(returnedAccount, amount);
-				return ResponseEntity.ok().body("$" + amount + " withdrawn successfully");
+				return ResponseEntity.ok()
+						.body("$" + amount + " withdrawn successfully. Balance = " + returnedAccount.getBalance());
 
 			}
 		} catch (Exception e) {
@@ -71,7 +84,7 @@ public class AccountController {
 	}
 
 	@PostMapping("/deposit")
-	public ResponseEntity<?> deposit(@PathVariable long accountNumber, BigDecimal amount)
+	public ResponseEntity<?> deposit(@RequestParam long accountNumber, BigDecimal amount)
 			throws AccountNotFoundException {
 		Account returnedAccount = accountService.getById(accountNumber);
 		try {
@@ -79,10 +92,25 @@ public class AccountController {
 				throw new Exception("Account not found");
 			} else {
 				accountService.deposit(returnedAccount, amount);
-				return ResponseEntity.ok().body("$" + amount + " deposited successfully");
+				return ResponseEntity.ok()
+						.body("$" + amount + " deposited successfully. Balance = " + returnedAccount.getBalance());
 			}
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
+	@DeleteMapping("/delete/account{accountNumber}")
+	public ResponseEntity<?> delete(@PathVariable long accountNumber) {
+		try {
+			if (accountService.getById(accountNumber) == null) {
+				throw new UserNotFoundException(accountNumber);
+			}
+			accountService.delete(accountNumber);
+			return ResponseEntity.ok().body(accountNumber + " deleted successfully");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 }

@@ -52,20 +52,18 @@ public class Account {
 	@JsonIgnore
 	private LocalDateTime lastUpdated;
 	@ManyToOne
-//	@JsonIgnore
 	@JoinColumn(name = "customerId", referencedColumnName = "customerId")
 	private Customer customer;
 
-	/**
-	 * 
-	 */
 	public BigDecimal withdraw(BigDecimal amount) {
 		balance = balance.subtract(amount);
+		setLastUpdated(LocalDateTime.now());
 		return balance;
 	}
 
 	public BigDecimal deposit(BigDecimal amount) {
 		balance = balance.add(amount);
+		setLastUpdated(LocalDateTime.now());
 		return balance;
 	}
 
