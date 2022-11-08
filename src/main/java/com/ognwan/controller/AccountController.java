@@ -48,9 +48,19 @@ public class AccountController {
 		return accountService.create(account);
 	}
 
-	@GetMapping("/{customerId}")
+	@GetMapping("/customer/{customerId}")
 	public List<Account> getAllAccountsByCustomerId(@PathVariable long customerId) {
 		return accountService.listAccountsByCustomerId(customerId);
+	}
+
+	@GetMapping("account/{accountNumber}")
+	public ResponseEntity<?> getAccountByAccountNumber(@PathVariable long accountNumber) {
+		try {
+			Account returnedAccount = accountService.getById(accountNumber);
+			return ResponseEntity.ok(returnedAccount);
+		} catch (AccountNotFoundException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 	@PostMapping("/withdraw")
