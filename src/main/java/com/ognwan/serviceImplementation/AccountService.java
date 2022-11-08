@@ -62,12 +62,11 @@ public class AccountService implements ServiceInterface<Account> {
 	public BigDecimal withdraw(Account account, BigDecimal amount) throws Exception {
 		if (account.getAccountType().equals(AccountType.savings) && amount.compareTo(account.getBalance()) == 1) {
 			throw new Exception("no overdraft available");
-		} else {
-			account.setLastUpdated(LocalDateTime.now());
-			account.withdraw(amount);
-			Account updatedAccount = accountRepo.save(account);
-			return updatedAccount.getBalance();
 		}
+		account.setLastUpdated(LocalDateTime.now());
+		account.withdraw(amount);
+		Account updatedAccount = accountRepo.save(account);
+		return updatedAccount.getBalance();
 	}
 
 	public BigDecimal deposit(Account account, BigDecimal amount) {
