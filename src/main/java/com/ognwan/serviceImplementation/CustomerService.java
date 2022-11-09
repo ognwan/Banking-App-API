@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,7 @@ import lombok.NoArgsConstructor;
 @Service
 @NoArgsConstructor
 @AllArgsConstructor
+@Transactional
 public class CustomerService implements ServiceInterface<Customer> {
 	@Autowired
 	CustomerRepository customerRepo;
@@ -33,8 +36,6 @@ public class CustomerService implements ServiceInterface<Customer> {
 	@Override
 	public Customer create(Customer customer) throws Exception {
 		if (customerRepo.findByEmail(customer.getEmail()) == null) {
-			customer.setCreated(LocalDateTime.now());
-			customer.setLastUpdated(LocalDateTime.now());
 			customer.setPassword(customer.generatePassword());
 			return customerRepo.save(customer);
 		} else {
@@ -45,6 +46,7 @@ public class CustomerService implements ServiceInterface<Customer> {
 
 	@Override
 	public Customer update(Customer customer) {
+		customer.setLastUpdated(LocalDateTime.now());
 		Customer returnedcustomer = customerRepo.save(customer);
 		return returnedcustomer;
 	}

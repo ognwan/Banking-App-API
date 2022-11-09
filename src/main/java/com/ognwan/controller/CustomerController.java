@@ -45,10 +45,9 @@ public class CustomerController {
 	}
 
 	@PutMapping("/update-profile")
-	public ResponseEntity<?> updateCustomerDetails(@RequestBody Customer customer, @RequestParam String email) {
-		Customer returnedCustomer = customerService.getByEmail(email);
-
+	public ResponseEntity<?> updateCustomerDetails(@RequestBody Customer customer, @RequestParam long customerId) {
 		try {
+			Customer returnedCustomer = customerService.getById(customerId);
 			if (returnedCustomer == null) {
 				throw new Exception("User does not exist");
 			}

@@ -24,6 +24,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,7 +47,7 @@ import lombok.RequiredArgsConstructor;
 public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long customerId;
 	@NotNull
 	@NonNull
@@ -83,11 +84,11 @@ public class Customer {
 	@NotNull(message = "Date of Birth field cannot be blank")
 	@NonNull
 	private LocalDate DoB;
-	@JsonIgnore
-	private LocalDateTime created;
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private LocalDateTime created = LocalDateTime.now();
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime lastUpdated;
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private boolean requiresPasswordChange;
 	@JsonIgnore
 	private boolean isDeleted = false;
@@ -101,7 +102,6 @@ public class Customer {
 		String password = RandomStringUtils.random(8, 0, possibleCharacters.length - 1, false, false,
 				possibleCharacters, new SecureRandom());
 		return password;
-
 	}
 
 }

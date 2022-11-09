@@ -96,7 +96,6 @@ public class AccountController {
 				throw new Exception("Account not found");
 			}
 			accountService.deposit(returnedAccount, amount);
-
 			Map<String, Object> obj = new HashMap<>();
 			obj.put("amount", amount);
 			obj.put("balance", returnedAccount.getBalance());

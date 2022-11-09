@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,22 +42,23 @@ import lombok.ToString;
 public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long accountNumber;
 	@NonNull
 	@Enumerated(EnumType.STRING)
 	private AccountType accountType;
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@NotNull
 	private BigDecimal balance = BigDecimal.ZERO;
-	@JsonIgnore
-	private LocalDateTime createdAt;
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private LocalDateTime createdAt = LocalDateTime.now();
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime lastUpdated;
 	@JsonIgnore
 	private boolean isDeleted = false;
 	@ManyToOne
 	@JoinColumn(name = "customerId", referencedColumnName = "customerId")
+	@JsonIgnore
 	private Customer customer;
 	@OneToMany(mappedBy = "account")
 	@JsonIgnore
