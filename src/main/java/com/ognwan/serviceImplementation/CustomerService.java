@@ -4,6 +4,7 @@
 package com.ognwan.serviceImplementation;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -136,5 +137,13 @@ public class CustomerService implements ServiceInterface<Customer, Account> {
 	public Customer create(Customer t, Account a) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<Customer> getAllCustomers() {
+		// TODO Auto-generated method stub
+		return customerRepo.findAll();
 	}
 }

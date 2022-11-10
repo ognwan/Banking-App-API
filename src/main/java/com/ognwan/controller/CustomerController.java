@@ -3,6 +3,8 @@
  */
 package com.ognwan.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +35,11 @@ import lombok.NoArgsConstructor;
 public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
+
+	@GetMapping("/all")
+	public List<Customer> getAllCustomers() {
+		return customerService.getAllCustomers();
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {

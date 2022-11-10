@@ -90,7 +90,7 @@ public class Customer {
 	private LocalDateTime created = LocalDateTime.now();
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime lastUpdated;
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonIgnore
 	private boolean requiresPasswordChange;
 	@JsonIgnore
 	private boolean isDeleted = false;
