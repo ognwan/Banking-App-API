@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.ognwan.model.Account;
 import com.ognwan.model.AccountType;
+import com.ognwan.model.Customer;
 import com.ognwan.repository.AccountRepository;
 import com.ognwan.service.ServiceInterface;
 
@@ -32,22 +33,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Transactional
-public class AccountService implements ServiceInterface<Account> {
+public class AccountService implements ServiceInterface<Account, Customer> {
 	@Autowired
 	private AccountRepository accountRepo;
 	@Autowired
 	TransactionService transactionService;
 
 	@Override
-	public Account create(Account account) throws Exception {
+	public Account create(Account account, Customer customer) throws Exception {
 		account.setCreatedAt(LocalDateTime.now());
+		account.setCustomer(customer);
 		accountRepo.save(account);
 		transactionService.createTransaction(account, "Account opened", BigDecimal.ZERO);
 		return account;
 	}
 
 	@Override
-	public Account update(Account account) {
+	public Account update(Account account, long accountNumber) {
 		return null;
 	}
 

@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
 
 /**
  * @author gerry
@@ -36,7 +35,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "ACCOUNTS")
 @Data
-@ToString
+//@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {

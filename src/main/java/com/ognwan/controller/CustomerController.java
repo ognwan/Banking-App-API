@@ -47,31 +47,8 @@ public class CustomerController {
 	@PutMapping("/update-profile")
 	public ResponseEntity<?> updateCustomerDetails(@RequestBody Customer customer, @RequestParam long customerId) {
 		try {
-			Customer returnedCustomer = customerService.getById(customerId);
-			if (returnedCustomer == null) {
-				throw new Exception("User does not exist");
-			}
-
-			if (customer.getEmail() != null && customerService.isEmailUnique(customer.getEmail())) {
-				returnedCustomer.setEmail(customer.getEmail());
-			}
-			if (customer.getFirstName() != null) {
-				returnedCustomer.setFirstName(customer.getFirstName());
-			}
-			if (customer.getMiddleName() != null) {
-				returnedCustomer.setMiddleName(customer.getMiddleName());
-			}
-			if (customer.getLastName() != null) {
-				returnedCustomer.setLastName(customer.getLastName());
-			}
-			if (customer.getAddress() != null) {
-				returnedCustomer.setAddress(customer.getAddress());
-			}
-			if (customer.getPhoneNumber() != null) {
-				returnedCustomer.setPhoneNumber(customer.getPhoneNumber());
-			}
-			customerService.update(returnedCustomer);
-			return ResponseEntity.ok(returnedCustomer);
+			Customer updatedCustomer = customerService.update(customer, customerId);
+			return ResponseEntity.ok(updatedCustomer);
 
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

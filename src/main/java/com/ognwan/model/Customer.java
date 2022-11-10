@@ -31,6 +31,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author gerry
@@ -44,6 +45,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Data
+@ToString
 public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
