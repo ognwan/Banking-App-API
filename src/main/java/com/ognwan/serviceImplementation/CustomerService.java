@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ognwan.exceptions.UserNotFoundException;
+import com.ognwan.model.Account;
 import com.ognwan.model.Customer;
 import com.ognwan.repository.CustomerRepository;
 import com.ognwan.service.ServiceInterface;
@@ -29,11 +30,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Transactional
-public class CustomerService implements ServiceInterface<Customer> {
+public class CustomerService implements ServiceInterface<Customer, Account> {
 	@Autowired
 	CustomerRepository customerRepo;
 
-	@Override
 	public Customer create(Customer customer) throws Exception {
 		if (customerRepo.findByEmail(customer.getEmail()) == null) {
 			customer.setPassword(customer.generatePassword());
@@ -45,10 +45,33 @@ public class CustomerService implements ServiceInterface<Customer> {
 	}
 
 	@Override
-	public Customer update(Customer customer) {
+	public Customer update(Customer customer, long customerId) throws Exception {
+		Customer returnedCustomer = getById(customerId);
+		if (returnedCustomer == null) {
+			throw new Exception("User does not exist");
+		}
 		customer.setLastUpdated(LocalDateTime.now());
-		Customer returnedcustomer = customerRepo.save(customer);
-		return returnedcustomer;
+
+		if (customer.getEmail() != null) {
+			returnedCustomer.setEmail(customer.getEmail());
+		}
+		if (customer.getFirstName() != null) {
+			returnedCustomer.setFirstName(customer.getFirstName());
+		}
+		if (customer.getMiddleName() != null) {
+			returnedCustomer.setMiddleName(customer.getMiddleName());
+		}
+		if (customer.getLastName() != null) {
+			returnedCustomer.setLastName(customer.getLastName());
+		}
+		if (customer.getAddress() != null) {
+			returnedCustomer.setAddress(customer.getAddress());
+		}
+		if (customer.getPhoneNumber() != null) {
+			returnedCustomer.setPhoneNumber(customer.getPhoneNumber());
+		}
+		return customerRepo.save(returnedCustomer);
+
 	}
 
 	@Override
@@ -107,5 +130,11 @@ public class CustomerService implements ServiceInterface<Customer> {
 	@Override
 	public void delete(long id) {
 		customerRepo.deleteById(id);
+	}
+
+	@Override
+	public Customer create(Customer t, Account a) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

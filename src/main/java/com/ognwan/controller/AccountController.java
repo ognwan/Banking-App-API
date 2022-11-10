@@ -45,11 +45,10 @@ public class AccountController {
 	@Autowired
 	private CustomerService customerService;
 
-	@PostMapping("/openNewAccount")
+	@PostMapping("/open-new-account")
 	public Account openAccount(@RequestParam long id, @RequestBody Account account) throws Exception {
 		Customer returnedCustomer = customerService.getById(id);
-		account.setCustomer(returnedCustomer);
-		return accountService.create(account);
+		return accountService.create(account, returnedCustomer);
 	}
 
 	@GetMapping("/customer/{customerId}")
